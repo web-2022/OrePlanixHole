@@ -1,6 +1,12 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
+
+<meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
+<meta http-equiv="Pragma" content="no-cache">
+<meta http-equiv="Expires" content="0">
+
+<meta name="mx-oreplanix-build" content="v10-canonical-live-master">
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>MX OREPLANIX · Dashboard Ejecutivo con Panel Lateral</title>
@@ -1174,6 +1180,303 @@ td{font-size:10px !important;padding:9px !important}
 }
 </style>
 
+
+
+
+
+<script id="mx-auto-update">
+(function(){
+  const MX_BUILD_ID="1791343884797";
+  const CHECK_KEY="mx-build-check:"+location.pathname;
+
+  async function getFreshBuild(){
+    try{
+      const url=new URL(location.href);
+      url.searchParams.set("_mxcheck",Date.now().toString());
+
+      const response=await fetch(url.toString(),{
+        cache:"no-store",
+        headers:{
+          "Cache-Control":"no-cache, no-store, must-revalidate",
+          "Pragma":"no-cache"
+        }
+      });
+
+      if(!response.ok)return null;
+      const text=await response.text();
+      const match=text.match(/const MX_BUILD_ID="([^"]+)"/);
+      return match ? {id:match[1],url} : null;
+    }catch(error){
+      console.warn("MX auto-update check:",error);
+      return null;
+    }
+  }
+
+  async function checkForNewVersion(force=false){
+    const fresh=await getFreshBuild();
+    if(!fresh || fresh.id===MX_BUILD_ID)return false;
+
+    try{
+      sessionStorage.setItem(CHECK_KEY,fresh.id);
+    }catch(_){
+    }
+
+    const target=new URL(location.href);
+    target.searchParams.set("_mxv",fresh.id);
+    target.searchParams.delete("_mxcheck");
+    location.replace(target.toString());
+    return true;
+  }
+
+  /*
+    Al cargar la página hacemos una verificación real contra el archivo
+    actual del servidor. Si fue reemplazado, se recarga automáticamente.
+  */
+  window.addEventListener("DOMContentLoaded",()=>{
+    setTimeout(()=>checkForNewVersion(),120);
+  },{once:true});
+
+  /*
+    Si vuelves a la pestaña después de editar/reemplazar archivos,
+    vuelve a comprobar automáticamente.
+  */
+  document.addEventListener("visibilitychange",()=>{
+    if(document.visibilityState==="visible"){
+      checkForNewVersion();
+    }
+  });
+
+  window.addEventListener("focus",()=>checkForNewVersion());
+
+  /*
+    F5 normal: este código comprueba la versión fresca y corrige
+    automáticamente cualquier HTML servido desde caché.
+  */
+  globalThis.mxCheckForNewVersion=checkForNewVersion;
+})();
+</script>
+
+
+<style id="mx-fix-bar-height">
+/* MX FIX BAR HEIGHT */
+#mxProjectBarChart .bar-group{
+  height:165px;
+  align-items:flex-end;
+}
+#mxProjectBarChart .bar{
+  min-height:2px;
+}
+</style>
+
+
+<style id="mx-level4-external-bar-fix">
+#mxProjectBarChart{
+  min-height:190px;
+  align-items:stretch;
+}
+#mxProjectBarChart .bar-group{
+  height:165px;
+  align-self:flex-end;
+}
+#mxProjectBarChart .bar{
+  min-height:2px;
+}
+</style>
+
+
+<style id="mx-executive-contrast-fix">
+/* ==========================================================
+   MX OREPLANIX-Hole · CONTRASTE EJECUTIVO
+   Evita texto blanco o demasiado claro sobre superficies blancas.
+   ========================================================== */
+
+/* Superficies claras principales */
+.main-card,
+.main-card-head,
+.content-wrap,
+.card,
+.kpi,
+.tool,
+.sidebar,
+.mobile-project-row,
+.mobile-portfolio-kpi,
+.mobile-exec-kpi,
+.mx-economic-kpi,
+.mx-economic-summary,
+.mx-economic-table-card,
+.donut-center{
+  color:#10234b !important;
+}
+
+/* Títulos y valores importantes en fondos claros */
+.card strong,
+.card b,
+.kpi strong,
+.kpi b,
+.kpi-value,
+.kpi-top,
+.main-card strong,
+.content-wrap strong,
+.content-wrap b,
+.mobile-project-row strong,
+.mobile-project-row b,
+.mobile-portfolio-kpi strong,
+.mobile-exec-kpi strong,
+.mx-economic-kpi strong,
+.mx-economic-summary strong,
+.mx-economic-table-card strong{
+  color:#10234b;
+}
+
+/* Texto normal dentro de tarjetas blancas */
+.card p,
+.card div,
+.card label,
+.card td,
+.kpi p,
+.kpi div,
+.kpi label,
+.main-card p,
+.content-wrap p,
+.content-wrap label,
+.mobile-project-row,
+.mobile-portfolio-kpi,
+.mobile-exec-kpi{
+  text-shadow:none;
+}
+
+/* Texto secundario: visible pero jerárquicamente menor */
+.card-head span,
+.kpi-label,
+.sidebar-footer p,
+.mobile-project-name span,
+.mobile-project-total span,
+.mobile-portfolio-kpi span,
+.mobile-exec-label,
+.legend-inline,
+.donut-legend,
+.mx-economic-kpi span,
+.mx-economic-summary-row span,
+.empty-state,
+.mx-economic-empty{
+  color:#647895 !important;
+}
+
+/* Tablas */
+table{
+  color:#18345f !important;
+}
+th{
+  color:#506783 !important;
+  background:#f4f7fb !important;
+}
+td{
+  color:#203b63 !important;
+}
+tbody tr:hover td{
+  color:#10234b !important;
+}
+
+/* Inputs/selectores sobre superficies claras */
+.tool select,
+.tool input,
+.main-card select,
+.main-card input{
+  color:#10234b !important;
+}
+.tool select option,
+.main-card select option{
+  color:#10234b !important;
+  background:#fff !important;
+}
+
+/* Gráficos sobre fondo blanco */
+.bar i,
+.bar-label{
+  color:#304d75 !important;
+}
+.map-label{
+  color:#17345d !important;
+  background:#fff !important;
+}
+.finding strong,
+.disc-card strong{
+  color:#17345d !important;
+}
+
+/* Enlaces sobre blanco */
+.card-link{
+  color:#1267d8 !important;
+}
+
+/* ==========================================================
+   EXCEPCIONES: elementos con fondo oscuro/de color.
+   Aquí sí mantenemos blanco.
+   ========================================================== */
+.top-header,
+.top-header strong,
+.top-header .brand-title strong,
+.top-header .header-center,
+.top-header .header-center strong,
+.top-header .header-btn:not(.primary),
+.top-header .header-project-picker,
+.top-header .header-project-picker select,
+.nav-item.active,
+.nav-item.active *,
+.tool-avatar,
+.stack-pct,
+.funnel-row{
+  color:#fff !important;
+}
+
+.top-header .brand-title span,
+.top-header .header-center span{
+  color:#b9c7db !important;
+}
+
+.top-header .brand-mark{
+  color:#163b84 !important;
+  background:#fff !important;
+}
+
+.top-header .header-btn.primary{
+  color:#152a48 !important;
+}
+
+.top-header .header-project-picker select option{
+  color:#10234b !important;
+  background:#fff !important;
+}
+
+/* Colores semánticos: conservar significado */
+.kpi-delta{
+  color:#14804a !important;
+}
+.kpi-delta.bad{
+  color:#b42318 !important;
+}
+.mx-economic-status.ok{
+  color:#14804a !important;
+}
+.mx-economic-status.warn{
+  color:#9a5700 !important;
+}
+.mx-economic-status.bad{
+  color:#b42318 !important;
+}
+.mx-economic-status.neutral{
+  color:#536b8a !important;
+}
+
+/* Mayor legibilidad general */
+.card-head strong{
+  font-weight:800;
+}
+.kpi-value{
+  font-weight:900;
+}
+</style>
+
 </head>
 <body>
 <div class="app">
@@ -1260,21 +1563,21 @@ td{font-size:10px !important;padding:9px !important}
 
       <article class="mobile-exec-kpi">
         <span class="mobile-exec-label">Gasto a la fecha vs PPTO</span>
-        <strong id="mxKpiSpend">Sin data</strong>
+        <strong id="mxKpiSpend">—</strong>
         <small id="mxKpiSpendSub">No existe dataset económico</small>
         <div class="mobile-exec-progress budget"><i id="mxKpiSpendBar" style="width:0%"></i></div>
       </article>
 
       <article class="mobile-exec-kpi">
         <span class="mobile-exec-label">Costo por metro vs PPTO</span>
-        <strong id="mxKpiCostM">Sin data</strong>
+        <strong id="mxKpiCostM">—</strong>
         <small id="mxKpiCostMSub">No existe dataset económico</small>
         <div class="mobile-exec-status" id="mxKpiCostMStatus">—</div>
       </article>
 
       <article class="mobile-exec-kpi">
         <span class="mobile-exec-label">Cierre proyectado vs programado</span>
-        <strong id="mxKpiForecast">Sin data</strong>
+        <strong id="mxKpiForecast">—</strong>
         <small id="mxKpiForecastSub">No existe cronograma de cierre</small>
         <div class="mobile-exec-progress forecast"><i id="mxKpiForecastBar" style="width:0%"></i></div>
       </article>
@@ -1319,14 +1622,14 @@ td{font-size:10px !important;padding:9px !important}
 
     <!-- KPI DESKTOP: SIN VALORES DEMO -->
     <section class="kpi-grid" id="mxDesktopKpiGrid">
-      <div class="kpi"><div class="kpi-top"><div class="kpi-icon">◈</div><div class="kpi-label">Proyectos con data</div></div><div class="kpi-value" id="mxDeskProjects">0</div><div class="kpi-delta" id="mxDeskProjectsSub">—</div></div>
-      <div class="kpi"><div class="kpi-top"><div class="kpi-icon">⛏</div><div class="kpi-label">Sondajes programados</div></div><div class="kpi-value" id="mxDeskPlannedHoles">0</div><div class="kpi-delta" id="mxDeskPlannedHolesSub">—</div></div>
-      <div class="kpi"><div class="kpi-top"><div class="kpi-icon">▥</div><div class="kpi-label">Sondajes ejecutados</div></div><div class="kpi-value" id="mxDeskExecutedHoles">0</div><div class="kpi-delta" id="mxDeskExecutedHolesSub">—</div></div>
-      <div class="kpi"><div class="kpi-top"><div class="kpi-icon">╱</div><div class="kpi-label">Metros programados</div></div><div class="kpi-value" id="mxDeskPlannedMeters">0 m</div><div class="kpi-delta" id="mxDeskPlannedMetersSub">—</div></div>
-      <div class="kpi"><div class="kpi-top"><div class="kpi-icon">◎</div><div class="kpi-label">Metros ejecutados</div></div><div class="kpi-value" id="mxDeskExecutedMeters">0 m</div><div class="kpi-delta" id="mxDeskExecutedMetersSub">—</div></div>
+      <div class="kpi"><div class="kpi-top"><div class="kpi-icon">◈</div><div class="kpi-label">Proyectos con data</div></div><div class="kpi-value" id="mxDeskProjects">—</div><div class="kpi-delta" id="mxDeskProjectsSub">—</div></div>
+      <div class="kpi"><div class="kpi-top"><div class="kpi-icon">⛏</div><div class="kpi-label">Sondajes programados</div></div><div class="kpi-value" id="mxDeskPlannedHoles">—</div><div class="kpi-delta" id="mxDeskPlannedHolesSub">—</div></div>
+      <div class="kpi"><div class="kpi-top"><div class="kpi-icon">▥</div><div class="kpi-label">Sondajes ejecutados</div></div><div class="kpi-value" id="mxDeskExecutedHoles">—</div><div class="kpi-delta" id="mxDeskExecutedHolesSub">—</div></div>
+      <div class="kpi"><div class="kpi-top"><div class="kpi-icon">╱</div><div class="kpi-label">Metros programados</div></div><div class="kpi-value" id="mxDeskPlannedMeters">—</div><div class="kpi-delta" id="mxDeskPlannedMetersSub">—</div></div>
+      <div class="kpi"><div class="kpi-top"><div class="kpi-icon">◎</div><div class="kpi-label">Metros ejecutados</div></div><div class="kpi-value" id="mxDeskExecutedMeters">—</div><div class="kpi-delta" id="mxDeskExecutedMetersSub">—</div></div>
       <div class="kpi"><div class="kpi-top"><div class="kpi-icon">◉</div><div class="kpi-label">Cumplimiento</div></div><div class="kpi-value" id="mxDeskCompliance">—</div><div class="kpi-delta" id="mxDeskComplianceSub">—</div></div>
-      <div class="kpi"><div class="kpi-top"><div class="kpi-icon">⌘</div><div class="kpi-label">Disciplinas con data</div></div><div class="kpi-value" id="mxDeskDisciplines">0 / 3</div><div class="kpi-delta" id="mxDeskDisciplinesSub">—</div></div>
-      <div class="kpi"><div class="kpi-top"><div class="kpi-icon">⚠</div><div class="kpi-label">Alertas cargadas</div></div><div class="kpi-value" id="mxDeskAlerts">Sin data</div><div class="kpi-delta" id="mxDeskAlertsSub">No existe dataset de alertas</div></div>
+      <div class="kpi"><div class="kpi-top"><div class="kpi-icon">⌘</div><div class="kpi-label">Disciplinas con data</div></div><div class="kpi-value" id="mxDeskDisciplines">—</div><div class="kpi-delta" id="mxDeskDisciplinesSub">—</div></div>
+      <div class="kpi"><div class="kpi-top"><div class="kpi-icon">⚠</div><div class="kpi-label">Alertas cargadas</div></div><div class="kpi-value" id="mxDeskAlerts">—</div><div class="kpi-delta" id="mxDeskAlertsSub">No existe dataset de alertas</div></div>
     </section>
 
     <section class="grid-main">
@@ -1496,30 +1799,75 @@ td{font-size:10px !important;padding:9px !important}
   const MASTER_STORE="master";
   const MASTER_ID="MX_OREPLANIX_MASTER_DATA_V1";
   const MASTER_SIGNAL_KEY="MX_OREPLANIX_MASTER_SIGNAL_V1";
+  const LEVEL4_SESSION_KEY="MX_OREPLANIX_LEVEL4_EXECUTIVE_V1";
+  const LEVEL4_WINDOW_PREFIX="MX_OREPLANIX_LEVEL4_EXEC_V1::";
+  const MASTER_SESSION_KEY="MX_OREPLANIX_MASTER_SESSION_V4";
 
   function openMasterDb(){
     return new Promise((resolve,reject)=>{
       const req=indexedDB.open(MASTER_DB_NAME,MASTER_DB_VERSION);
+
       req.onupgradeneeded=()=>{
         const db=req.result;
         if(!db.objectStoreNames.contains(MASTER_STORE)){
           db.createObjectStore(MASTER_STORE,{keyPath:"id"});
         }
       };
+
       req.onsuccess=()=>resolve(req.result);
       req.onerror=()=>reject(req.error);
+      req.onblocked=()=>reject(
+        new Error("IndexedDB bloqueado por otra versión abierta")
+      );
     });
   }
 
   async function readMaster(){
     try{
-      const db=await openMasterDb();
-      return await new Promise((resolve,reject)=>{
-        const tx=db.transaction(MASTER_STORE,"readonly");
-        const req=tx.objectStore(MASTER_STORE).get(MASTER_ID);
-        req.onsuccess=()=>{const v=req.result||null;db.close();resolve(v);};
-        req.onerror=()=>{const e=req.error;db.close();reject(e);};
-      });
+      const db=await Promise.race([
+        openMasterDb(),
+        new Promise((_,reject)=>
+          setTimeout(
+            ()=>reject(new Error("Timeout abriendo la fuente maestra")),
+            3000
+          )
+        )
+      ]);
+
+      return await Promise.race([
+        new Promise((resolve,reject)=>{
+          let settled=false;
+
+          const finish=(fn,value)=>{
+            if(settled)return;
+            settled=true;
+            try{db.close();}catch(_){}
+            fn(value);
+          };
+
+          let tx;
+          try{
+            tx=db.transaction(MASTER_STORE,"readonly");
+          }catch(error){
+            finish(reject,error);
+            return;
+          }
+
+          const req=tx.objectStore(MASTER_STORE).get(MASTER_ID);
+          req.onsuccess=()=>finish(resolve,req.result||null);
+          req.onerror=()=>finish(reject,req.error);
+          tx.onabort=()=>finish(
+            reject,
+            tx.error||new Error("Lectura cancelada")
+          );
+        }),
+        new Promise((_,reject)=>
+          setTimeout(
+            ()=>reject(new Error("Timeout leyendo la fuente maestra")),
+            3000
+          )
+        )
+      ]);
     }catch(error){
       console.warn("No se pudo leer la fuente maestra:",error);
       return null;
@@ -1536,20 +1884,106 @@ td{font-size:10px !important;padding:9px !important}
   }
 
   async function loadSharedPayload(){
-    const master=await readMaster();
-    if(!master)return null;
+    const candidates=[];
+
+    const accept=value=>{
+      if(
+        value &&
+        value.id===MASTER_ID &&
+        Array.isArray(value.projects) &&
+        Array.isArray(value.rows) &&
+        value.schema==="mx-oreplanix-level4-dashboard-v1"
+      ){
+        candidates.push(value);
+      }
+    };
 
     /*
-      El Ejecutivo consume DIRECTAMENTE la misma fuente maestra de M3D3.
-      No existe master.executive ni un payload alterno.
+      1. Canal directo de navegación.
     */
-    if(master.schema!=="mx-oreplanix-master-v2-single-source"){
-      console.warn("Fuente maestra con esquema anterior:",master.schema);
+    try{
+      if(
+        typeof window.name==="string" &&
+        window.name.startsWith(
+          LEVEL4_WINDOW_PREFIX
+        )
+      ){
+        accept(
+          JSON.parse(
+            window.name.slice(
+              LEVEL4_WINDOW_PREFIX.length
+            )
+          )
+        );
+      }
+    }catch(error){
+      console.warn(
+        "Level4 window.name:",
+        error
+      );
     }
-    return normalizePayload(master);
+
+    /*
+      2. Session storage.
+    */
+    try{
+      const raw=sessionStorage.getItem(
+        LEVEL4_SESSION_KEY
+      );
+
+      if(raw){
+        accept(JSON.parse(raw));
+      }
+    }catch(error){
+      console.warn(
+        "Level4 sessionStorage:",
+        error
+      );
+    }
+
+    /*
+      3. IndexedDB: mismo payload Level4 guardado por M3D3.
+    */
+    try{
+      const indexed=
+        await readMaster();
+
+      accept(indexed);
+    }catch(error){
+      console.warn(
+        "Level4 IndexedDB:",
+        error
+      );
+    }
+
+    if(!candidates.length){
+      return null;
+    }
+
+    /*
+      Si hay varias copias, siempre usamos la más reciente.
+    */
+    candidates.sort(
+      (a,b)=>
+        (Date.parse(b.generatedAt||"")||0)-
+        (Date.parse(a.generatedAt||"")||0)
+    );
+
+    const selected=candidates[0];
+
+    console.info(
+      "MX OREPLANIX Ejecutivo · fuente Level4",
+      {
+        projects:selected.projects.length,
+        rows:selected.rows.length,
+        generatedAt:selected.generatedAt,
+        source:selected.source
+      }
+    );
+
+    return normalizePayload(selected);
   }
-    return null;
-  }
+
 
   const $=id=>document.getElementById(id);
   const num=v=>Number(v)||0;
@@ -1594,51 +2028,79 @@ td{font-size:10px !important;padding:9px !important}
   function projectCatalog(payload){
     const map=new Map();
 
-    for(const p of payload.projects||[]){
-      if(p?.id)map.set(String(p.id),{id:String(p.id),name:String(p.name||"Proyecto")});
+    for(const p of payload?.projects||[]){
+      const id=String(p?.id||"").trim();
+      if(!id)continue;
+
+      map.set(id,{
+        id,
+        name:String(p?.name||"Proyecto")
+      });
     }
-    for(const d of payload.projectData||[]){
-      if(d?.projectId && !map.has(String(d.projectId))){
-        map.set(String(d.projectId),{id:String(d.projectId),name:String(d.projectName||"Proyecto")});
+
+    for(const row of payload?.rows||[]){
+      const id=String(
+        row?.projectId||""
+      ).trim();
+
+      if(id && !map.has(id)){
+        map.set(id,{
+          id,
+          name:String(
+            row?.projectName||"Proyecto"
+          )
+        });
       }
     }
 
-    const details=new Map(
-      (payload.projectData||[]).map(d=>[String(d.projectId),d])
+    const detailById=new Map(
+      (payload?.projectData||[]).map(
+        d=>[
+          String(d?.projectId||""),
+          d
+        ]
+      )
     );
 
     return [...map.values()]
-      .map(p=>{
-        const detail=details.get(p.id)||null;
-
-        /*
-           El proyecto solo entra al dashboard si SU snapshot actual
-           tiene data. Las rows antiguas nunca pueden revivirlo.
-        */
-        const hasTechnical=detailHasCurrentData(detail);
-        const hasEconomic=!!latestCostRowForProject(payload,p);
-        const meaningful=hasTechnical || hasEconomic;
-
-        const rows=hasTechnical
-          ?(payload.rows||[]).filter(r=>String(r.projectId)===p.id)
-          :[];
+      .map(project=>{
+        const rows=
+          (payload?.rows||[])
+            .filter(
+              r=>
+                String(r?.projectId||"")===
+                project.id
+            );
 
         return {
-          ...p,
+          ...project,
           rows,
-          detail,
-          summary:summarizeCampaign(rows),
-          hasTechnical,
-          hasEconomic,
-          meaningful
+          detail:
+            detailById.get(project.id)||null,
+          summary:
+            summarizeCampaign(rows),
+          meaningful:
+            rows.length>0 ||
+            !!latestCostRowForProject(
+              payload,
+              project
+            )
         };
       })
-      .filter(p=>p.meaningful)
-      .sort((a,b)=>a.name.localeCompare(b.name,"es",{sensitivity:"base"}));
+      .sort(
+        (a,b)=>
+          a.name.localeCompare(
+            b.name,
+            "es",
+            {sensitivity:"base"}
+          )
+      );
   }
 
+  let executiveSelectedProjectId="__all__";
+
   function currentProjectId(){
-    return $("mobileHeaderProjectSelect")?.value || $("desktopProjectSelect")?.value || "__all__";
+    return executiveSelectedProjectId || "__all__";
   }
 
   function shownProjects(projects){
@@ -1647,20 +2109,19 @@ td{font-size:10px !important;padding:9px !important}
   }
 
   function shownRows(payload){
-    const validIds=new Set(
-      (payload.projectData||[])
-        .filter(detailHasCurrentData)
-        .map(d=>String(d.projectId))
-    );
-
-    const current=(payload.rows||[]).filter(
-      r=>validIds.has(String(r.projectId))
-    );
+    const rows=
+      Array.isArray(payload?.rows)
+        ?payload.rows
+        :[];
 
     const id=currentProjectId();
+
     return id==="__all__"
-      ?current
-      :current.filter(r=>String(r.projectId)===id);
+      ?rows
+      :rows.filter(
+          r=>
+            String(r?.projectId||"")===id
+        );
   }
 
   function aggregateDetails(projects){
@@ -1714,10 +2175,31 @@ td{font-size:10px !important;padding:9px !important}
   }
 
   function fillSelectors(payload,projects){
-    const selects=[$("mobileHeaderProjectSelect"),$("desktopProjectSelect")].filter(Boolean);
-    const prior=currentProjectId();
+    const selects=[
+      $("mobileHeaderProjectSelect"),
+      $("desktopProjectSelect")
+    ].filter(Boolean);
+
+    if(!selects.length)return;
+
+    const ids=new Set(
+      (projects||[]).map(p=>String(p.id))
+    );
+
+    const requested=
+      executiveSelectedProjectId!=="__all__" &&
+      ids.has(String(executiveSelectedProjectId))
+        ?String(executiveSelectedProjectId)
+        :(payload.activeProjectId &&
+          ids.has(String(payload.activeProjectId))
+            ?String(payload.activeProjectId)
+            :"__all__");
+
+    executiveSelectedProjectId=requested;
+
     for(const sel of selects){
       sel.innerHTML="";
+
       const all=document.createElement("option");
       all.value="__all__";
       all.textContent=`Todos (${projects.length})`;
@@ -1725,28 +2207,40 @@ td{font-size:10px !important;padding:9px !important}
 
       for(const p of projects){
         const opt=document.createElement("option");
-        opt.value=p.id;
+        opt.value=String(p.id);
+
         const holes=num(p.detail?.uniqueHoleCount);
-        opt.textContent=holes?`${p.name} · ${holes} sondajes`:p.name;
+        const records=num(p.detail?.totalDatasetRows);
+
+        let suffix="";
+        if(holes>0)suffix=` · ${holes} sondajes`;
+        else if(records>0)suffix=` · ${records} registros`;
+        else if(!p.meaningful)suffix=" · sin data";
+
+        opt.textContent=`${p.name}${suffix}`;
         sel.appendChild(opt);
       }
+
+      sel.value=requested;
     }
-
-    const desired=
-      selects.some(s=>[...s.options].some(o=>o.value===prior))
-        ?prior
-        :(payload.activeProjectId && projects.some(p=>p.id===String(payload.activeProjectId))
-          ?String(payload.activeProjectId)
-          :"__all__");
-
-    for(const sel of selects)sel.value=desired;
   }
 
   function syncSelectors(source){
-    const value=source.value;
-    for(const id of ["mobileHeaderProjectSelect","desktopProjectSelect"]){
+    const value=String(source?.value||"__all__");
+    executiveSelectedProjectId=value;
+
+    for(const id of [
+      "mobileHeaderProjectSelect",
+      "desktopProjectSelect"
+    ]){
       const s=$(id);
-      if(s && s!==source && [...s.options].some(o=>o.value===value))s.value=value;
+      if(
+        s &&
+        s!==source &&
+        [...s.options].some(o=>o.value===value)
+      ){
+        s.value=value;
+      }
     }
   }
 
@@ -2279,7 +2773,7 @@ td{font-size:10px !important;padding:9px !important}
     const scope=currentProjectId()==="__all__"?`${projects.length} proyectos`:(projects[0]?.name||"Proyecto");
     const when=payload.generatedAt?new Date(payload.generatedAt).toLocaleString("es-PE"):"";
     $("mxExecutiveSubtitle").textContent=
-      `${scope} · ${fmt(details.uniqueHoleCount)} sondajes únicos · ${fmt(details.totalDatasetRows)} registros técnicos · ${fmt(details.collarCount)} Collar · ${fmt(details.surveyCount)} Survey${when?` · sincronizado ${when}`:""}`;
+      `${scope} · ${fmt(details.uniqueHoleCount)} sondajes · ${fmt(payload.rows?.length||0)} filas del Tablero Ejecutivo · ${fmt(details.collarCount)} Collar · ${fmt(details.surveyCount)} Survey${when?` · sincronizado ${when}`:""}`;
     $("mxCampaignScope").textContent=currentProjectId()==="__all__"?"(todos los proyectos)":`(${projects[0]?.name||"proyecto"})`;
   }
 
@@ -2431,53 +2925,72 @@ td{font-size:10px !important;padding:9px !important}
   }
 
   function bindSelectorsOnce(){
-    if(globalThis.__mxExecutiveSelectorsBound)return;
-    globalThis.__mxExecutiveSelectorsBound=true;
-    for(const id of ["mobileHeaderProjectSelect","desktopProjectSelect"]){
-      $(id)?.addEventListener("change",e=>{
-        syncSelectors(e.currentTarget);
-        if(payload)render(payload);
+    for(const id of [
+      "mobileHeaderProjectSelect",
+      "desktopProjectSelect"
+    ]){
+      const sel=$(id);
+      if(!sel || sel.dataset.mxBound==="1")continue;
+
+      sel.dataset.mxBound="1";
+
+      sel.addEventListener("change",event=>{
+        syncSelectors(event.currentTarget);
+
+        if(payload){
+          render(payload);
+        }
       });
     }
   }
 
   async function refreshFromMaster(){
-    const next=await loadSharedPayload();
+    const next=
+      await loadSharedPayload();
 
     if(!next){
       payload=null;
       showNoData();
+      bindSelectorsOnce();
       return;
     }
 
     payload=next;
 
-    if(!hasMeaningfulTechnicalData(payload)){
-      clearExecutiveDisplay("El Panel Técnico no contiene data de sondajes. El Ejecutivo se mantiene vacío.");
-      bindSelectorsOnce();
-      return;
-    }
+    const catalog=
+      projectCatalog(payload);
 
-    const catalog=projectCatalog(payload);
+    fillSelectors(
+      payload,
+      catalog
+    );
+
+    bindSelectorsOnce();
 
     if(!catalog.length){
       clearExecutiveDisplay(
-        "El Panel Técnico no contiene data actual. No se muestran datos históricos ni cacheados."
+        "El Tablero Ejecutivo de M3D3 no contiene proyectos."
       );
-      bindSelectorsOnce();
       return;
     }
 
-    fillSelectors(payload,catalog);
-    bindSelectorsOnce();
     render(payload);
   }
 
   async function boot(){
     try{
-      lastMasterSignal=localStorage.getItem(MASTER_SIGNAL_KEY)||"";
-    }catch(e){}
-    await refreshFromMaster();
+      try{
+        lastMasterSignal=localStorage.getItem(MASTER_SIGNAL_KEY)||"";
+      }catch(e){}
+
+      await refreshFromMaster();
+    }catch(error){
+      console.error("Error iniciando Panel Ejecutivo:",error);
+      payload=null;
+      clearExecutiveDisplay(
+        "No se pudo leer la fuente maestra de M3D3. Abre el Ejecutivo desde el botón del Panel Técnico."
+      );
+    }
   }
 
   /* Si M3D3 está abierto en otra pestaña, el Ejecutivo se refresca al guardar,
